@@ -64,14 +64,17 @@ class Game:
                         11 - Power of Ten
                         12 - Square Root
                         13 - Algebra
+                        14 - Statistics
+                        15 - Fibonaci
+                        16 - Big Number Party
                         """
             self.print_format(message)
             entry = input()
 
             try:
                 entry = int(entry)
-                if entry not in [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]:
-                    self.print_format("0 - 13 only")
+                if entry not in [i for i in range(17)]:
+                    self.print_format("0 - 16 only")
                 else:
                     self.TYPE = entry
                     break
@@ -91,14 +94,15 @@ class Game:
                 if entry not in [1, 2]:
                     self.print_format("1 or 2 only")
                 else:
-                    self.DIFFICULTY = entry
+                    #self.DIFFICULTY = entry
+                    self.DIFFICULTY = 2
                     break
             except:
                 self.print_format("Not Valid")
 
     def define_problem(self):
         if self.TYPE == 0:
-            self.problem_type = choice([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13])
+            self.problem_type = choice([i+1 for i in range(16)])
         else:
             self.problem_type = self.TYPE
 
@@ -188,9 +192,31 @@ class Game:
             self.num1 = randint(1, 10)
             self.num2 = randint(1, 10 ** 1)
             self.num3 = self.solution * self.num1 + self.num2
+        elif self.problem_type == 14:
+            # statistics
+            length = 5
+            self.solution = randint(length, length * 2)
+            nums = []
+            total = self.solution * length
+            for i in range(length-1):
+                n = randint(0,total-length)
+                total = total - n
+                nums.append(n)
+            nums.append(total)
+            self.nums = nums
+        elif self.problem_type == 15:
+            # Fibonaci
+            # I copied this
+            fib = lambda n: n if n < 2 else fib(n-1) + fib(n-2)
+            self.num = randint(6,15)
+            self.solution = fib(self.num)
+        elif self.problem_type == 16:
+            index = randint(0,7)
+            self.val = ['hundred','thousand', 'ten thousand','hundred thousand','million','ten million','hundred million','billion'][index]
+            self.solution = 10**(index+2)
         else:
             # triangle-> a2+b2=c3. diameter=2x radius. rounding?
-            # xth fibonaci. log(billion). meters-km-cm.
+            # log(billion). meters-km-cm.
             # square roots
             pass
 
@@ -241,6 +267,12 @@ class Game:
                 message = f"Side length of a square with area {self.num1} = ?"
         elif self.problem_type == 13:
             message = f"x*{self.num1} + {self.num2} = {self.num3}\nWhat is x?"
+        elif self.problem_type == 14:
+            message = f"What is the average (mean) of {str(self.nums)}?"
+        elif self.problem_type == 15:
+            message = f"The Fibonaci sequence starts 1,1,2,3,5... What is number {self.num} in the sequence?"
+        elif self.problem_type == 16:
+            message = f"How big is {self.val}?"
         else:
             message = f"Problem type {self.problem_type} not found."
         self.print_format(message)
